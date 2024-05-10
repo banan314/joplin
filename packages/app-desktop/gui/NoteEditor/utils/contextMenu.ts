@@ -17,6 +17,7 @@ import ItemChange from '@joplin/lib/models/ItemChange';
 import { HtmlToMarkdownHandler, MarkupToHtmlHandler } from './types';
 import shim from '@joplin/lib/shim';
 import { openFileWithExternalEditor } from '@joplin/lib/services/ExternalEditWatcher/utils';
+import enhancePastedText from './textPasteEnhancer';
 const fs = require('fs-extra');
 const { writeFile } = require('fs-extra');
 const { clipboard } = require('electron');
@@ -200,6 +201,8 @@ export function menuItems(dispatch: Function, htmlToMd: HtmlToMarkdownHandler, m
 				if (pastedHtml) {
 					content = await processPastedHtml(pastedHtml, htmlToMd, mdToHtml);
 				}
+
+				content = enhancePastedText(content);
 
 				options.insertContent(content);
 			},
